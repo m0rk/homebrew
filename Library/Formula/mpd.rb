@@ -10,14 +10,17 @@ class Mpd <Formula
   depends_on 'pkg-config'
   depends_on 'flac'
   depends_on 'libshout'
-  depends_on 'libmad'
-  depends_on 'faad2'
+  depends_on 'mad' => :optional
+  depends_on 'faad2' => :optional
   depends_on 'fluid-synth'
   depends_on 'libcue' => :optional
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
   def install
+    # make faad.h findable (when brew is used elsewhere than /usr/local/)
+    ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
+
     configure_args = [
       "--prefix=#{prefix}",
       "--disable-debug",
